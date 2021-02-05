@@ -2,6 +2,6 @@ this is a script, that will help you migrate your angular project, away from fle
 
 ### RUN
 ```bash
-chmod +x -R ./scripts
+chmod -R +x ./scripts
 ./scripts/flex-layout.sh <your-module-path>
 ```
