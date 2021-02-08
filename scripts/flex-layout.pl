@@ -146,6 +146,8 @@ while(my $line = <HTML>) {
     $line =~ s/fxHide\.($mq)/class="flex-hide-$1"/g;
     #fxFlex
     $line =~ s/fxFlex(?!(=|\.))/class="flex-flex"/g;
+    #fxFlex
+    $line =~ s/fxFill(?!(=|\.))/class="flex-fill"/g;
     #fxLayoutGap="x"
     $line =~ s/fxLayoutGap(?!\.)="($cv)"/style="gap: $1;"/g;
     # the following rules required editing css classes
