@@ -33,13 +33,18 @@ open(MIG, ">", $html_migrated) or die "$!";
 open(SCSS, ">>", $scss) or die "$!";
 
 my $css_class;
+# record added classes to prevent duplications
+my @added_css_classes; 
 sub flex_insert_css {
         my $val = join '', @_;
         my $ext = "";
         $ext = '%' unless $val =~ /px$/;
+        my $class_name = ".flex-flex-$val";;
+        return 0 if $class_name ~~ @added_css_classes;
+        push(@added_css_classes, $class_name);
 $css_class = <<EOF;
 
-.flex-flex-$val {
+$class_name {
     \@include flex-flex($val$ext);
     max-height: $val$ext;
     max-width: $val$ext;
@@ -53,9 +58,12 @@ sub flex_insert_css_with_media_query {
         my ($q, $val) = @_;
         my $ext = "";
         $ext = '%' unless $val =~ /px$/;
+        my $class_name = ".flex-flex-$q-$val";;
+        return 0 if $class_name ~~ @added_css_classes;
+        push(@added_css_classes, $class_name);
 $css_class = <<EOF;
 
-.flex-flex-$q-$val {
+$class_name {
     \@include fx-$q {
         \@include flex-flex($val$ext);
         max-height: $val$ext;
@@ -71,9 +79,12 @@ sub gap_insert_css_with_media_query {
         my ($q, $val) = @_;
         my $ext = "";
         $ext = '%' unless $val =~ /px$/;
+        my $class_name = ".flex-gap-$q-$val";;
+        return 0 if $class_name ~~ @added_css_classes;
+        push(@added_css_classes, $class_name);
 $css_class = <<EOF;
 
-.flex-gap-$q-$val {
+$class_name {
     \@include fx-$q {
         gap: $val$ext;
     }
@@ -93,9 +104,12 @@ sub align_insert_css {
         $concat =~ s/\s/\-/;
         my $align_items = "";
         $align_items = "\n\talign-items: center;" if $val =~ /center/;
+        my $class_name = ".flex-align-$concat";
+        return 0 if $class_name ~~ @added_css_classes;
+        push(@added_css_classes, $class_name);
 $css_class = <<EOF;
 
-.flex-align-$concat {
+$class_name {
   \@include flex-align($val);$align_items
 }
 EOF
@@ -109,9 +123,12 @@ sub align_insert_css_with_media_query {
         $concat =~ s/\s/\-/;
         my $align_items = "";
         $align_items = "\n\t\t\t\talign-items: center;" if $val =~ /center/;
+        my $class_name = ".flex-align-$concat-$q";;
+        return 0 if $class_name ~~ @added_css_classes;
+        push(@added_css_classes, $class_name);
 $css_class = <<EOF;
 
-.flex-align-$concat-$q {
+$class_name {
     \@include fx-$q {
         \@include flex-align($val);$align_items
     }
