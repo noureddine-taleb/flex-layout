@@ -1,6 +1,9 @@
 #!/usr/bin/perl
 
-# todo: fxLayoutGap.lt-md fxFlex="60%" fxLayout.lt-md="column" fxLayout.lt-md="column" 
+# this script is not meant to be run directly
+# it is automatically invoked by the flex-layout-stub
+# its job is to find flex-layout pattern in the given component
+# and replace them with equivalent css classes
 
 use strict;
 use warnings;
