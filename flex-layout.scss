@@ -1,0 +1,29 @@
+@import './media-queries.scss';
+
+/*
+* Core functions
+*/
+@mixin flex-column {
+  display: flex;
+  flex-direction: column !important;
+  box-sizing: border-box;
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row !important;
+  box-sizing: border-box;
+}
+
+@mixin flex-flex($size) {
+  flex: 1 1 $size;
+  box-sizing: border-box;
+}
+
+@mixin flex-hide {
+  display: none !important;
+}
+
+@mixin flex-align($align) {
+  place-content: $align;
+}

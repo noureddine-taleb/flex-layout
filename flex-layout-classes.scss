@@ -1,0 +1,295 @@
+@import './flex-layout.scss';
+
+/*
+* Flex Layout
+*/
+
+.flex-flex {
+  @include flex-flex(0%);
+}
+
+.flex-fill {
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+}
+
+/*
+* Flex layout for column
+*/
+.flex-column {
+  @include flex-column();
+}
+.flex-column-xs {
+  @include fx-xs() {
+    @include flex-column();
+  }
+}
+.flex-column-sm {
+  @include fx-sm() {
+    @include flex-column();
+  }
+}
+.flex-column-md {
+  @include fx-md() {
+    @include flex-column();
+  }
+}
+.flex-column-lg {
+  @include fx-lg() {
+    @include flex-column();
+  }
+}
+.flex-column-xl {
+  @include fx-xl() {
+    @include flex-column();
+  }
+}
+.flex-column-lt-sm {
+  @include fx-lt-sm() {
+    @include flex-column();
+  }
+}
+.flex-column-lt-md {
+  @include fx-lt-md() {
+    @include flex-column();
+  }
+}
+.flex-column-lt-lg {
+  @include fx-lt-lg() {
+    @include flex-column();
+  }
+}
+.flex-column-lt-xl {
+  @include fx-lt-xl() {
+    @include flex-column();
+  }
+}
+.flex-column-gt-xs {
+  @include fx-gt-xs() {
+    @include flex-column();
+  }
+}
+.flex-column-gt-sm {
+  @include fx-gt-sm() {
+    @include flex-column();
+  }
+}
+.flex-column-gt-md {
+  @include fx-gt-md() {
+    @include flex-column();
+  }
+}
+.flex-column-gt-lg {
+  @include fx-gt-lg() {
+    @include flex-column();
+  }
+}
+
+/*
+* Flex layout for row
+*/
+.flex-row {
+  @include flex-row();
+}
+.flex-row-xs {
+  @include fx-xs() {
+    @include flex-row();
+  }
+}
+.flex-row-sm {
+  @include fx-sm() {
+    @include flex-row();
+  }
+}
+.flex-row-md {
+  @include fx-md() {
+    @include flex-row();
+  }
+}
+.flex-row-lg {
+  @include fx-lg() {
+    @include flex-row();
+  }
+}
+.flex-row-xl {
+  @include fx-xl() {
+    @include flex-row();
+  }
+}
+.flex-row-lt-sm {
+  @include fx-lt-sm() {
+    @include flex-row();
+  }
+}
+.flex-row-lt-md {
+  @include fx-lt-md() {
+    @include flex-row();
+  }
+}
+.flex-row-lt-lg {
+  @include fx-lt-lg() {
+    @include flex-row();
+  }
+}
+.flex-row-lt-xl {
+  @include fx-lt-xl() {
+    @include flex-row();
+  }
+}
+.flex-row-gt-xs {
+  @include fx-gt-xs() {
+    @include flex-row();
+  }
+}
+.flex-row-gt-sm {
+  @include fx-gt-sm() {
+    @include flex-row();
+  }
+}
+.flex-row-gt-md {
+  @include fx-gt-md() {
+    @include flex-row();
+  }
+}
+.flex-row-gt-lg {
+  @include fx-gt-lg() {
+    @include flex-row();
+  }
+}
+
+/*
+* Flex layout for hide
+*/
+.flex-hide {
+  @include flex-hide();
+}
+.flex-hide-hide {
+  @include fx-xs() {
+    @include flex-hide();
+  }
+}
+.flex-hide-sm {
+  @include fx-sm() {
+    @include flex-hide();
+  }
+}
+.flex-hide-xs {
+  @include fx-xs() {
+    @include flex-hide();
+  }
+}
+.flex-hide-md {
+  @include fx-md() {
+    @include flex-hide();
+  }
+}
+.flex-hide-lg {
+  @include fx-lg() {
+    @include flex-hide();
+  }
+}
+.flex-hide-xl {
+  @include fx-xl() {
+    @include flex-hide();
+  }
+}
+.flex-hide-lt-sm {
+  @include fx-lt-sm() {
+    @include flex-hide();
+  }
+}
+.flex-hide-lt-md {
+  @include fx-lt-md() {
+    @include flex-hide();
+  }
+}
+.flex-hide-lt-lg {
+  @include fx-lt-lg() {
+    @include flex-hide();
+  }
+}
+.flex-hide-lt-xl {
+  @include fx-lt-xl() {
+    @include flex-hide();
+  }
+}
+.flex-hide-gt-xs {
+  @include fx-gt-xs() {
+    @include flex-hide();
+  }
+}
+.flex-hide-gt-sm {
+  @include fx-gt-sm() {
+    @include flex-hide();
+  }
+}
+.flex-hide-gt-md {
+  @include fx-gt-md() {
+    @include flex-hide();
+  }
+}
+.flex-hide-gt-lg {
+  @include fx-gt-lg() {
+    @include flex-hide();
+  }
+}
+
+/*
+* Custom
+*/
+.flex-row-wrap {
+  @include flex-row();
+  flex-flow: wrap;
+}
+
+.flex-column-wrap {
+  @include flex-column();
+  flex-flow: wrap;
+}
+
+.flex-align-center {
+  display: flex;
+  flex-direction: row;
+  @include flex-align(stretch center);
+  align-items: center;
+}
+
+.flex-align-start {
+  @include flex-align(start);
+}
+
+.flex-align-space-between {
+  @include flex-align(space-between);
+}
+
+.flex-align-stretch {
+  @include flex-align(stretch);
+}
+
+.flex-align-end {
+  @include flex-align(end);
+}
+
+.flex-align-space-between-end {
+  @include flex-align(space-between flex-end);
+  align-items: flex-end;
+}
+
+.flex-align-space-between-center {
+  @include flex-align(space-between center);
+}
+
+.flex-align-center-space-between {
+  @include flex-align(center space-between);
+  align-items: center;
+}
+
+.flex-align-space-between-start {
+  @include flex-align(flex-start space-between);
+}
+
+.flex-align-space-between-none {
+  @include flex-align(space-between none);
+}
