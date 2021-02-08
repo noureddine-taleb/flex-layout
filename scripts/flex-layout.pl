@@ -7,6 +7,7 @@
 
 use strict;
 use warnings;
+no warnings 'experimental';
 
 my $component_preffix = shift @ARGV;
 
