@@ -8,6 +8,7 @@
 use strict;
 use warnings;
 no warnings 'experimental';
+use Term::ANSIColor;
 
 my $component_preffix = shift @ARGV;
 
@@ -35,12 +36,12 @@ open(SCSS, ">>", $scss) or die "$!";
 
 my $css_class;
 # record added classes to prevent duplications
-my @added_css_classes; 
+my @added_css_classes;
 sub flex_insert_css {
         my $val = join '', @_;
         my $ext = "";
         $ext = '%' unless $val =~ /px$/;
-        my $class_name = ".flex-flex-$val";;
+        my $class_name = ".flex-flex-$val";
         return 0 if $class_name ~~ @added_css_classes;
         push(@added_css_classes, $class_name);
 $css_class = <<EOF;
@@ -59,13 +60,13 @@ sub flex_insert_css_with_media_query {
         my ($q, $val) = @_;
         my $ext = "";
         $ext = '%' unless $val =~ /px$/;
-        my $class_name = ".flex-flex-$q-$val";;
+        my $class_name = ".flex-flex-$val-$q";
         return 0 if $class_name ~~ @added_css_classes;
         push(@added_css_classes, $class_name);
 $css_class = <<EOF;
 
 $class_name {
-    \@include fx-$q {
+    \@include fx-$q() {
         \@include flex-flex($val$ext);
         max-height: $val$ext;
         max-width: $val$ext;
@@ -80,13 +81,13 @@ sub gap_insert_css_with_media_query {
         my ($q, $val) = @_;
         my $ext = "";
         $ext = '%' unless $val =~ /px$/;
-        my $class_name = ".flex-gap-$q-$val";;
+        my $class_name = ".flex-gap-$val-$q";
         return 0 if $class_name ~~ @added_css_classes;
         push(@added_css_classes, $class_name);
 $css_class = <<EOF;
 
 $class_name {
-    \@include fx-$q {
+    \@include fx-$q() {
         gap: $val$ext;
     }
 }
@@ -98,13 +99,60 @@ EOF
 # flex align
 sub align_insert_css {
         my $val = join '', @_;
+        my $concat = $val;
+        # used to create class name
+        $concat =~ s/\s/\-/;
+        # add extra css values
+        my $align_items = "";
+        # bail if there is only one property
         if ((split ' ', $val) == 1) {
             return 0;
         }
-        my $concat = $val;
-        $concat =~ s/\s/\-/;
-        my $align_items = "";
-        $align_items = "\n\talign-items: center;" if $val =~ /center/;
+        if ($val =~ /center/) {
+            my @tmp = split ' ', $val;
+            my @align_arr;
+            $align_arr[0] = "center";
+            my $index = 1;
+            foreach (@tmp) {
+                if (!($_ eq "center")) {
+                    $align_arr[$index] = $_;
+                    $index++;
+                }
+            }
+            $val = join ' ', @align_arr;
+            $align_items = "\n\talign-items: center;";
+        }
+        
+        if ($val =~ /start/) {
+            my @tmp = split ' ', $val;
+            my @align_arr;
+            $align_arr[0] = "start";
+            my $index = 1;
+            foreach (@tmp) {
+                if (!($_ eq "start")) {
+                    $align_arr[$index] = $_;
+                    $index++;
+                }
+            }
+            $val = join ' ', @align_arr;
+            $align_items = "\n\talign-items: start;";
+        }
+        
+        if ($val =~ /end/) {
+            my @tmp = split ' ', $val;
+            my @align_arr;
+            $align_arr[0] = "end";
+            my $index = 1;
+            foreach (@tmp) {
+                if (!($_ eq "end")) {
+                    $align_arr[$index] = $_;
+                    $index++;
+                }
+            }
+            $val = join ' ', @align_arr;
+            $align_items = "\n\talign-items: end;";
+        }
+
         my $class_name = ".flex-align-$concat";
         return 0 if $class_name ~~ @added_css_classes;
         push(@added_css_classes, $class_name);
@@ -123,14 +171,60 @@ sub align_insert_css_with_media_query {
         my $concat = $val;
         $concat =~ s/\s/\-/;
         my $align_items = "";
+        if ((split ' ', $val) > 1) {
+            if ( $val =~ /center/) {
+                my @tmp = split ' ', $val;
+                my @align_arr;
+                $align_arr[0] = "center";
+                my $index = 1;
+                foreach (@tmp) {
+                    if (!($_ eq "center")) {
+                        $align_arr[$index] = $_;
+                        $index++;
+                    }
+                }
+                $val = join ' ', @align_arr;
+            }
+
+            if ($val =~ /start/) {
+                my @tmp = split ' ', $val;
+                my @align_arr;
+                $align_arr[0] = "start";
+                my $index = 1;
+                foreach (@tmp) {
+                    if (!($_ eq "start")) {
+                        $align_arr[$index] = $_;
+                        $index++;
+                    }
+                }
+                $val = join ' ', @align_arr;
+            }
+            
+            if ($val =~ /end/) {
+                my @tmp = split ' ', $val;
+                my @align_arr;
+                $align_arr[0] = "end";
+                my $index = 1;
+                foreach (@tmp) {
+                    if (!($_ eq "end")) {
+                        $align_arr[$index] = $_;
+                        $index++;
+                    }
+                }
+                $val = join ' ', @align_arr;
+            }
+        }
+        
         $align_items = "\n\t\t\t\talign-items: center;" if $val =~ /center/;
+        $align_items = "\n\t\t\t\talign-items: start;" if $val =~ /start/;
+        $align_items = "\n\t\t\t\talign-items: end;" if $val =~ /end/;
         my $class_name = ".flex-align-$concat-$q";;
         return 0 if $class_name ~~ @added_css_classes;
         push(@added_css_classes, $class_name);
 $css_class = <<EOF;
 
 $class_name {
-    \@include fx-$q {
+    \@include fx-$q() {
         \@include flex-align($val);$align_items
     }
 }
@@ -167,7 +261,9 @@ while(my $line = <HTML>) {
     $line =~ s/fxHide\.($mq)/class="flex-hide-$1"/g;
     #fxFlex
     $line =~ s/fxFlex(?!(=|\.))/class="flex-flex"/g;
-    #fxFlex
+    #fxFlex.media-query
+    $line =~ s/fxFlex\.($mq)\s/class="flex-flex-$1"/g;
+    #fxFill
     $line =~ s/fxFill(?!(=|\.))/class="flex-fill"/g;
     #fxLayoutGap="x"
     $line =~ s/fxLayoutGap(?!\.)="($cv)"/style="gap: $1;"/g;
@@ -178,7 +274,7 @@ while(my $line = <HTML>) {
         $line =~ s/fxFlex="($cv)"/class="flex-flex-$1"/g;
         my $ret = flex_insert_css(@grp);
         $include_flex = $ret if $include_flex == 0;
-        
+
     }
 
     $line =~ s/fxFlex\.($mq)="($ap)%"/fxFlex\.$1="$2"/g;
@@ -186,14 +282,14 @@ while(my $line = <HTML>) {
         $line =~ s/fxFlex\.($mq)="($cv)"/class="flex-flex-$2-$1"/g;
         my $ret = flex_insert_css_with_media_query(@grp);
         $include_flex = $ret if $include_flex == 0;
-        
+
     }
     # flex-gap-x
     if (my @grp = $line =~ /fxLayoutGap\.($mq)="($ap)"/) {
         $line =~ s/fxLayoutGap\.($mq)="($ap)"/class="flex-gap-$2-$1"/g;
         my $ret = gap_insert_css_with_media_query(@grp);
         $include_flex = $ret if $include_flex == 0;
-        
+
     }
     # flex-align-x
     if (my @grp = $line =~ /fxLayoutAlign="($cv)"/) {
@@ -202,7 +298,7 @@ while(my $line = <HTML>) {
         $line =~ s/fxLayoutAlign="($cv)"/class="flex-align-$align"/g;
         my $ret = align_insert_css(@grp);
         $include_flex = $ret if $include_flex == 0;
-        
+
         $warn = 1;
     }
     if (my @grp = $line =~ /fxLayoutAlign\.($mq)="($cv)"/) {
@@ -211,7 +307,7 @@ while(my $line = <HTML>) {
         $line =~ s/fxLayoutAlign\.($mq)="($cv)"/class="flex-align-$align-$1"/g;
         my $ret = align_insert_css_with_media_query(@grp);
         $include_flex = $ret if $include_flex == 0;
-        
+
         $warn = 1;
     }
 
@@ -260,7 +356,7 @@ close(MIG);
 if ($include_flex) {
     open(SCSS_READ, "<", $scss) or die "$!";
     open(SCSS_UPDATE, ">", $scss_update) or die "$!";
-    print SCSS_UPDATE "\@import '/src/theme/flex-layout.scss';\n";
+    print SCSS_UPDATE "\@import '/src/theme/flex-layout/flex-mixins.scss';\n";
     print SCSS_UPDATE $_ while <SCSS_READ>;
     close(SCSS_UPDATE);
     close(SCSS_READ);
@@ -272,6 +368,6 @@ if ($include_flex) {
 
 # raise warning in case of flex-align class is used
 # because it needs to be checked
-print "warning: ", $component_preffix, " needs further investigation", "\n" if $warn;
+print color("yellow"), "warning: ", color("reset"), $component_preffix, " needs further investigation", "\n" if $warn;
 
 

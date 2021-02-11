@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# assuming modules have there own separate floder
+# assuming modules have there own separate floders
 # with the current structure <module-path>/components :
+# Ex:
 # src/app/module
 # └── components
 #    ├── component-1
@@ -35,9 +36,10 @@ fi
 
 echo "scan: $module_dir";
 
-for c in $module_dir/**/*.html
+for c in `find ${module_dir} -type f -name "*html"`
 do
     c=$(echo $c | rev | cut -d. -f2- | rev)
     ./scripts/flex-layout.pl $c
+    grep fx $c.html >/dev/null && echo $(tput setaf 3)warning: $(tput sgr 0)unresolved directives found in $c
 done
 
