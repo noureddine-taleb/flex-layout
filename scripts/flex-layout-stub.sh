@@ -27,7 +27,17 @@ EOF
 exit 1
 fi
 
-module_dir="$1/components";
+# check second arg is raw 
+# means that the script shouldn't make any assumptions
+# about the module structure
+if [ "$2" != "raw" ]
+then
+    module_dir="$1/components";
+else
+    module_dir="$1";
+fi
+
+# check if dir exists
 if [ ! -e $module_dir ]
 then
     echo "err: $module_dir folder not found" >&2

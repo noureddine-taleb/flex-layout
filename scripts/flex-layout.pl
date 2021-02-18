@@ -262,7 +262,7 @@ while(my $line = <HTML>) {
     #fxFlex
     $line =~ s/fxFlex(?!(=|\.))/class="flex-flex"/g;
     #fxFlex.media-query
-    $line =~ s/fxFlex\.($mq)\s/class="flex-flex-$1"/g;
+    $line =~ s/fxFlex\.($mq)([^=])/class="flex-flex-$1"$2/g;
     #fxFill
     $line =~ s/fxFill(?!(=|\.))/class="flex-fill"/g;
     #fxLayoutGap="x"
